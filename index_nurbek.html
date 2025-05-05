@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Performance App</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        input,
+        button {
+            margin: 5px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #999;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+
+<body onload="loadData()">
+    <h1>Student Performance - Nurbek</h1>
+
+    <h2>Add Record</h2>
+    <div>
+        Gender: <input id="f-gender"><br>
+        Race/Ethnicity: <input id="f-race"><br>
+        Parental Education: <input id="f-education"><br>
+        Lunch: <input id="f-lunch"><br>
+        Test Prep: <input id="f-prep"><br>
+        Math: <input id="f-math" type="number"><br>
+        Reading: <input id="f-reading" type="number"><br>
+        Writing: <input id="f-writing" type="number"><br>
+        <button onclick="addData()">Add</button>
+    </div>
+
+    <h2>Delete Record</h2>
+    ID: <input id="d-id" type="number"><button onclick="deleteData()">Delete</button>
+
+    <h2>Sample Data</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Gender</th>
+                <th>Race</th>
+                <th>Education</th>
+                <th>Lunch</th>
+                <th>Prep</th>
+                <th>Math</th>
+                <th>Reading</th>
+                <th>Writing</th>
+            </tr>
+        </thead>
+        <tbody id="data-body"></tbody>
+    </table>
+
+    <script>
+        const api = "http://15.206.179.242:5000";
+
+        async function loadData() {
+            const res = await fetch(api + "/api/data");
+            const rows = await res.json();
+            const tbody = document.getElementById("data-body");
+            tbody.innerHTML = "";
+            rows.forEach(r => {
+                const tr = document.createElement("tr");
+                Object.values(r).forEach(v => {
+                    const td = document.createElement("td");
+                    td.textContent = v;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function addData() {
+            const payload = {
+                gender: document.getElementById("f-gender").value,
+                race: document.getElementById("f-race").value,
+                education: document.getElementById("f-education").value,
+                lunch: document.getElementById("f-lunch").value,
+                prep: document.getElementById("f-prep").value,
+                math: parseInt(document.getElementById("f-math").value),
+                reading: parseInt(document.getElementById("f-reading").value),
+                writing: parseInt(document.getElementById("f-writing").value)
+            };
+            await fetch(api + "/add", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+            loadData();
+        }
+
+        async function deleteData() {
+            const id = parseInt(document.getElementById("d-id").value);
+            await fetch(api + "/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id })
+            });
+            loadData();
+        }
+    </script>
+</body>
+
+</html>
