@@ -13,8 +13,14 @@
 
 ## Setup
 
+1. Turn on EC2, RDS in AWS
+2. Connect to EC2 Instance
+3. ```source venv/bin/activate``` then ```cd webapp``` and run ```python app.py```
+4. Go to the link: http://nurbek2t.s3-website.ap-south-1.amazonaws.com
+
 ### 1. Clone Repo
 
 ```bash
 git clone https://github.com/nuravck/webapp_nurbek.git
 cd webapp_nurbek
+```
