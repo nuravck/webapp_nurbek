@@ -66,10 +66,10 @@
     </table>
 
     <script>
-        const api = "http://15.206.179.242:5000";
+        const api = "http://13.232.78.130:5000";
 
         async function loadData() {
-            const res = await fetch(api + "/api/data");
+            const res = await fetch(api + "/student");
             const rows = await res.json();
             const tbody = document.getElementById("data-body");
             tbody.innerHTML = "";
@@ -87,13 +87,13 @@
         async function addData() {
             const payload = {
                 gender: document.getElementById("f-gender").value,
-                race: document.getElementById("f-race").value,
-                education: document.getElementById("f-education").value,
+                race_ethnicity: document.getElementById("f-race").value,
+                parental_level_of_education: document.getElementById("f-education").value,
                 lunch: document.getElementById("f-lunch").value,
-                prep: document.getElementById("f-prep").value,
-                math: parseInt(document.getElementById("f-math").value),
-                reading: parseInt(document.getElementById("f-reading").value),
-                writing: parseInt(document.getElementById("f-writing").value)
+                test_preparation_course: document.getElementById("f-prep").value,
+                math_score: parseInt(document.getElementById("f-math").value),
+                reading_score: parseInt(document.getElementById("f-reading").value),
+                writing_score: parseInt(document.getElementById("f-writing").value)
             };
             await fetch(api + "/add", {
                 method: "POST",
